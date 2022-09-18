@@ -22,7 +22,7 @@ export const item = style([
       backgroundColor: vars.colors.lightestGray,
     },
     ':focus-visible': {
-      outline: `2px solid ${vars.colors.accent}`
+      outline: vars.outline.focus,
     },
     selectors: {
       '&[aria-selected="true"]': {},

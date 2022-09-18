@@ -33,7 +33,7 @@ export const vars = createGlobalTheme(":root", {
     listItem: ".5rem .75rem",
   },
   outline: {
-    focus: `1px dotted ${accent}`,
+    focus: `2px solid ${accent}`,
   },
   line: {
     base: `1px solid gainsboro`,
