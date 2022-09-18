@@ -9,4 +9,4 @@ const nextConfig = {
   swcMinify: true,
 }
 
-module.exports = withVanillaExtract(nextConfig);
+module.exports = withVanillaExtract(nextConfig)
