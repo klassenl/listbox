@@ -1,19 +1,13 @@
-import {
-  useState,
-  ReactNode,
-  cloneElement,
-  useId,
-  useRef,
-} from 'react'
-import useOutsideClick from '../hooks/useOutsideClick'
-import FocusLock from 'react-focus-lock'
-import { vars } from '../../styles/theme.css'
+import { useState, ReactNode, cloneElement, useId, useRef } from "react";
+import useOutsideClick from "../hooks/useOutsideClick";
+import FocusLock from "react-focus-lock";
+import { menuOuter, menuDropdownOuter } from "./menu.css";
 
 const Menu = ({
   children,
   trigger,
   onOpen,
-  className = '',
+  className = "",
   autoFocus,
 }: {
   children: ReactNode;
@@ -22,21 +16,18 @@ const Menu = ({
   onOpen?: () => void;
   autoFocus?: boolean;
 }) => {
-  const [open, setOpen] = useState(false)
-  const triggerRef = useRef<HTMLElement | undefined>()
-  const triggerId = useId()
-  const contentId = useId()
-  const ref = useOutsideClick(() => setOpen(false), triggerRef as any)
+  const [open, setOpen] = useState(false);
+  const triggerRef = useRef<HTMLElement | undefined>();
+  const triggerId = useId();
+  const contentId = useId();
+  const ref = useOutsideClick(() => setOpen(false), triggerRef as any);
 
   return (
     <div
-      className={className}
-      style={{
-        position: 'relative',
-      }}
+      className={[menuOuter, className].join(" ")}
       onKeyDown={(e) => {
-        if (e.key === 'Escape') {
-          setOpen(false)
+        if (e.key === "Escape") {
+          setOpen(false);
         }
       }}
     >
@@ -44,31 +35,25 @@ const Menu = ({
         id: triggerId,
         ref: triggerRef,
         onClick: () => {
-          setOpen(!open)
+          setOpen(!open);
           if (open && onOpen) {
-            onOpen()
+            onOpen();
           }
         },
-        ['aria-controls']: contentId,
-        ['aria-expanded']: open,
+        ["aria-controls"]: contentId,
+        ["aria-expanded"]: open,
       })}
-      <div
-        id={contentId}
-        style={{
-          position: 'absolute',
-          zIndex: 1,
-          width: '100%',
-          backgroundColor: vars.colors.white,
-        }}
-      >
+      <div id={contentId} className={menuDropdownOuter}>
         {open && (
           <div ref={ref as any}>
-            <FocusLock returnFocus autoFocus={autoFocus}>{children}</FocusLock>
+            <FocusLock returnFocus autoFocus={autoFocus}>
+              {children}
+            </FocusLock>
           </div>
         )}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Menu
+export default Menu;
