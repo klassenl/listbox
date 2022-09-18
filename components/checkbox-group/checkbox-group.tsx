@@ -2,15 +2,6 @@ import ListBox from '../listbox/listbox'
 import { ListboxProps } from '../listbox/types'
 import { checkboxItem, item } from './checkbox-group.css'
 import Checkbox from '../checkbox/checkbox'
-const checkForSelected = (
-  value: unknown | undefined,
-  selectedValues: Array<unknown>
-) => {
-  if (Array.isArray(selectedValues)) {
-    return selectedValues.some((val) => val.value === value)
-  }
-  return selectedValues === value
-}
 
 const CheckboxGroup = <T,>({
   options,
@@ -44,6 +35,16 @@ const CheckboxGroup = <T,>({
       {...other}
     />
   )
+}
+
+const checkForSelected = (
+  value: unknown | undefined,
+  selectedValues: Array<unknown>
+) => {
+  if (Array.isArray(selectedValues)) {
+    return selectedValues.some((val) => val.value === value)
+  }
+  return selectedValues === value
 }
 
 export default CheckboxGroup
