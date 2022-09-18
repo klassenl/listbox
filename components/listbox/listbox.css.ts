@@ -1,10 +1,10 @@
-import { style } from "@vanilla-extract/css";
+import { style } from '@vanilla-extract/css'
 
 export const listBox = style({
-  listStyle: "none",
-});
+  listStyle: 'none',
+})
 
 export const listItem = style({
-  listStyle: "none",
-  cursor: "pointer",
-});
+  listStyle: 'none',
+  cursor: 'pointer',
+})

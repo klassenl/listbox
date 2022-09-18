@@ -1,13 +1,13 @@
-import { useState, ReactNode, cloneElement, useId, useRef } from "react";
-import useOutsideClick from "../hooks/useOutsideClick";
-import FocusLock from "react-focus-lock";
-import { menuOuter, menuDropdownOuter } from "./menu.css";
+import { useState, ReactNode, cloneElement, useId, useRef } from 'react'
+import useOutsideClick from '../hooks/useOutsideClick'
+import FocusLock from 'react-focus-lock'
+import { menuOuter, menuDropdownOuter } from './menu.css'
 
 const Menu = ({
   children,
   trigger,
   onOpen,
-  className = "",
+  className = '',
   autoFocus,
 }: {
   children: ReactNode;
@@ -16,18 +16,18 @@ const Menu = ({
   onOpen?: () => void;
   autoFocus?: boolean;
 }) => {
-  const [open, setOpen] = useState(false);
-  const triggerRef = useRef<HTMLElement | undefined>();
-  const triggerId = useId();
-  const contentId = useId();
-  const ref = useOutsideClick(() => setOpen(false), triggerRef as any);
+  const [open, setOpen] = useState(false)
+  const triggerRef = useRef<HTMLElement | undefined>()
+  const triggerId = useId()
+  const contentId = useId()
+  const ref = useOutsideClick(() => setOpen(false), triggerRef as any)
 
   return (
     <div
-      className={[menuOuter, className].join(" ")}
+      className={[menuOuter, className].join(' ')}
       onKeyDown={(e) => {
-        if (e.key === "Escape") {
-          setOpen(false);
+        if (e.key === 'Escape') {
+          setOpen(false)
         }
       }}
     >
@@ -35,13 +35,13 @@ const Menu = ({
         id: triggerId,
         ref: triggerRef,
         onClick: () => {
-          setOpen(!open);
+          setOpen(!open)
           if (open && onOpen) {
-            onOpen();
+            onOpen()
           }
         },
-        ["aria-controls"]: contentId,
-        ["aria-expanded"]: open,
+        ['aria-controls']: contentId,
+        ['aria-expanded']: open,
       })}
       <div id={contentId} className={menuDropdownOuter}>
         {open && (
@@ -53,7 +53,7 @@ const Menu = ({
         )}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Menu;
+export default Menu
