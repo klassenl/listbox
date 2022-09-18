@@ -34,7 +34,7 @@ const Layout = ({
         </header>
         <main className={container}>{children}</main>
         <footer className={footer}>
-          <a className={link} href="http://www.github.com/klassenl">
+          <a className={link} href="https://github.com/klassenl/listbox">
             Github
           </a>
         </footer>
