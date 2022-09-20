@@ -9,7 +9,6 @@ const Menu = ({
   onOpen,
   className = '',
   autoFocus,
-  type = 'listbox',
   labelId,
 }: {
   children: JSX.Element
@@ -17,7 +16,6 @@ const Menu = ({
   className?: string
   onOpen?: () => void
   autoFocus?: boolean
-  type?: 'listbox'
   labelId?: string
 }) => {
   const [open, setOpen] = useState(false)
@@ -28,6 +26,7 @@ const Menu = ({
 
   return (
     <div
+    aria-haspopup="listbox"
       className={[menuOuter, className].join(' ')}
       onKeyDown={(e) => {
         if (e.key === 'Escape') {
@@ -46,7 +45,7 @@ const Menu = ({
         },
         ['aria-controls']: contentId,
         ['aria-expanded']: open,
-        ['aria-haspopup']: type === 'listbox' ? 'listbox' : undefined
+        ['aria-haspopup']: 'listbox'
       })}
       <div className={menuDropdownOuter}>
         {open && (
@@ -63,7 +62,7 @@ const Menu = ({
                 'aria-labelledby': labelId ?? triggerId,
                 ['aria-controls']: contentId,
                 ['aria-expanded']: open,
-                ['aria-haspopup']: type === 'listbox' ? 'listbox' : undefined
+                ['aria-haspopup']: 'listbox99'
               })}
             </FocusLock>
           </div>
