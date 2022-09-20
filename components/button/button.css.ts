@@ -1,4 +1,4 @@
-import { style } from '@vanilla-extract/css'
+import { style, styleVariants } from '@vanilla-extract/css'
 import { vars } from '../../styles/theme.css'
 
 export const button = style({
@@ -11,12 +11,14 @@ export const button = style({
     outlineOffset: '1px',
   },
 })
-export const menuButton = style([
-  button,
-  {
+
+export const buttonStyle = styleVariants({
+  button: [button, {
+  }],
+  menu: [button, {
     minWidth: '140px',
     ':first-letter': {
       textTransform: 'uppercase',
     },
-  },
-])
+  }]
+})

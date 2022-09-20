@@ -2,8 +2,8 @@ import { srOnly } from '../../styles/app.css'
 import { menuInner, menu } from './checkbox-menu.css'
 import { ListboxProps, Option } from '../listbox/types'
 import CheckboxGroup from '../checkbox-group/checkbox-group'
-import Button from '../button/button'
 import Menu from '../menu/menu'
+import { buttonStyle } from '../button/button.css'
 
 const CheckboxMenu = <T,>({
   options,
@@ -17,10 +17,10 @@ const CheckboxMenu = <T,>({
     <Menu
       className={menu}
       trigger={
-        <Button variant="menu">
+        <button className={buttonStyle['menu']}>
           {`${buttonCopy(selectedValues as any, buttonText)}`}
           <span className={srOnly}>{name}</span>
-        </Button>
+        </button>
       }
     >
       <div className={menuInner}>

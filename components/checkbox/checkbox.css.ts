@@ -15,6 +15,7 @@ export const realCheckbox = style({
   transform: 'translateY(-0.075em)',
   display: 'grid',
   placeContent: 'center',
+  alignSelf: 'center',
 })
 
 globalStyle(`${realCheckbox}:before`, {

@@ -1,4 +1,4 @@
-import { useState, ReactNode, cloneElement, useId, useRef } from 'react'
+import { useState, cloneElement, useId, useRef } from 'react'
 import useOutsideClick from '../hooks/useOutsideClick'
 import FocusLock from 'react-focus-lock'
 import { menuOuter, menuDropdownOuter } from './menu.css'
@@ -9,12 +9,16 @@ const Menu = ({
   onOpen,
   className = '',
   autoFocus,
+  type = 'listbox',
+  labelId,
 }: {
-  children: ReactNode;
-  trigger: JSX.Element;
-  className?: string;
-  onOpen?: () => void;
-  autoFocus?: boolean;
+  children: JSX.Element
+  trigger: JSX.Element
+  className?: string
+  onOpen?: () => void
+  autoFocus?: boolean
+  type?: 'listbox'
+  labelId?: string
 }) => {
   const [open, setOpen] = useState(false)
   const triggerRef = useRef<HTMLElement | undefined>()
@@ -42,12 +46,25 @@ const Menu = ({
         },
         ['aria-controls']: contentId,
         ['aria-expanded']: open,
+        ['aria-haspopup']: type === 'listbox' ? 'listbox' : undefined
       })}
-      <div id={contentId} className={menuDropdownOuter}>
+      <div className={menuDropdownOuter}>
         {open && (
           <div ref={ref as any}>
             <FocusLock returnFocus autoFocus={autoFocus}>
-              {children}
+              {cloneElement(children, {
+                id: contentId,
+                onClick: () => {
+                  setOpen(!open)
+                  if (open && onOpen) {
+                    onOpen()
+                  }
+                },
+                'aria-labelledby': labelId ?? triggerId,
+                ['aria-controls']: contentId,
+                ['aria-expanded']: open,
+                ['aria-haspopup']: type === 'listbox' ? 'listbox' : undefined
+              })}
             </FocusLock>
           </div>
         )}
