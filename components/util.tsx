@@ -11,6 +11,19 @@ export const focus = {
       prevEl.focus()
     }
   },
+  first: (el: HTMLElement) => {
+    const firstSibling = (el.parentElement as HTMLElement).childNodes[0] as HTMLElement
+    if (firstSibling) {
+      firstSibling.focus()
+    }
+  },
+  last: (el: HTMLElement) => {
+    const siblingNodes = (el.parentElement as HTMLElement).childNodes
+    const lastSibling = siblingNodes[siblingNodes.length -1] as HTMLElement
+    if (lastSibling) {
+      lastSibling.focus()
+    }
+  },
 }
 
 export const getFirstSelectedItem = (

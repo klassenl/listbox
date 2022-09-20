@@ -15,6 +15,7 @@ const ListBox = <T,>({
   listItemClass,
   handleDeselect,
   disabled,
+  render
 }: ListboxProps<T>) => {
   const itemsRef = useRef<Array<HTMLLIElement | null>>([])
   const checkForSelected = (value: T | undefined) => {
@@ -23,6 +24,7 @@ const ListBox = <T,>({
     }
     return selectedValues === value
   }
+
   const handleSelectOrDeselect = (option: Option<T>) => {
     const isSelected = checkForSelected(option.value)
     if (selectType === 'single') {
@@ -45,29 +47,27 @@ const ListBox = <T,>({
       tabIndex={0}
       className={listBoxClass ? listBoxClass : listBox}
       aria-readonly={disabled}
-      onFocus={(e) => {
+      onFocus={() => {
         const activeEl = document?.activeElement
-        console.log(activeEl)
         if (activeEl?.tagName === 'LI') return
         const selectedItem = getFirstSelectedItem(itemsRef?.current)
-        console.log(itemsRef.current)
         if (selectedItem) {
           selectedItem.focus()
         } else if (itemsRef?.current?.length) {
           itemsRef?.current[0]?.focus()
         }
-        e.preventDefault()
       }}
     >
       {options.map((option, i) => {
         return (
           <ListItem
-            key={`opt-${option.value}`}
+            key={`item-chk-${option.value}`}
             handleSelectOrDeselect={handleSelectOrDeselect}
             checkForSelected={checkForSelected}
             className={listItemClass ? listItemClass : listItem}
             ref={(el: HTMLLIElement) => (itemsRef.current[i] = el)}
             option={option}
+            render={render}
           />
         )
       })}
@@ -82,11 +82,13 @@ const ListItem = forwardRef(
       className,
       checkForSelected,
       handleSelectOrDeselect,
+      render
     }: {
-      option: Option<unknown>;
-      className: string;
-      handleSelectOrDeselect: (option: Option<any>) => void;
-      checkForSelected: (value: any) => boolean;
+      option: Option<unknown>
+      className: string
+      handleSelectOrDeselect: (option: Option<any>) => void
+      checkForSelected: (value: any) => boolean
+      render?: (option: Option<any>, selected: boolean) => JSX.Element
     },
     ref
   ) => {
@@ -99,23 +101,38 @@ const ListItem = forwardRef(
         aria-selected={checkForSelected(option.value) || false}
         onClick={() => handleSelectOrDeselect(option)}
         onKeyDown={(e) => {
+          const target = e.target as HTMLElement
           const key = e.key ? e.code : e.key
           switch (key) {
             case 'ArrowDown': {
-              focus.next(e.target as HTMLElement)
+              focus.next(target)
               break
             }
             case 'ArrowUp': {
-              focus.prev(e.target as HTMLElement)
+              focus.prev(target)
               break
             }
             case 'Space': {
               handleSelectOrDeselect(option)
+              break
+            }
+
+            case 'Home': {
+              focus.first(target)
+              break
+            }
+            case 'End': {
+              focus.last(target)
+              break
             }
           }
         }}
       >
-        {option.content}
+        <span>
+          {render
+            ? render(option, checkForSelected(option.value) || false)
+            : option.content}
+        </span>
       </li>
     )
   }

@@ -5,26 +5,7 @@ import { Option } from '../components/listbox/types'
 import { subHeading, componentHeading, componentGrid } from '../styles/app.css'
 import CheckboxGroup from '../components/checkbox-group/checkbox-group'
 import CheckboxMenu from '../components/checkbox-menu/checkbox-menu'
-
-const options: Option<number>[] = [
-  {
-    content: 'cake',
-    value: 123,
-  },
-  {
-    content: 'cookies',
-    value: 456,
-  },
-  {
-    content: 'pie',
-    value: 789,
-  },
-  {
-    content: 'chocolate',
-    value: 700,
-  },
-]
-
+import { DESSERTS } from '../fake-data'
 const ListboxPage: NextPage = () => {
   const [multiSelection, setMultiSelection] = useState<Option<number>[]>([])
   const [singleSelection, setSingleSelection] = useState<
@@ -41,10 +22,10 @@ const ListboxPage: NextPage = () => {
               name="Select one dessert"
               allowUnselected
               selectType="single"
-              options={options}
+              options={DESSERTS}
               selectedValues={singleSelection ? [singleSelection] : []}
               handleSelect={(value) => {
-                const newOption = options.find(
+                const newOption = DESSERTS.find(
                   (option) => option.value === value
                 )
                 setSingleSelection(newOption ? newOption : undefined)
@@ -57,10 +38,10 @@ const ListboxPage: NextPage = () => {
               name="Select multiple desserts"
               allowUnselected
               selectType="multi"
-              options={options}
+              options={DESSERTS}
               selectedValues={multiSelection}
               handleSelect={(value) => {
-                const newOption = options.find(
+                const newOption = DESSERTS.find(
                   (option) => option.value === value
                 )
                 if (newOption) {
@@ -91,10 +72,10 @@ const ListboxPage: NextPage = () => {
               buttonText="Dessert?"
               allowUnselected
               selectType="single"
-              options={options}
+              options={DESSERTS}
               selectedValues={singleSelection ? [singleSelection] : []}
               handleSelect={(value) => {
-                const newOption = options.find(
+                const newOption = DESSERTS.find(
                   (option) => option.value === value
                 )
                 setSingleSelection(newOption ? newOption : undefined)
@@ -108,10 +89,10 @@ const ListboxPage: NextPage = () => {
               buttonText="Desserts?"
               allowUnselected
               selectType="multi"
-              options={options}
+              options={DESSERTS}
               selectedValues={multiSelection}
               handleSelect={(value) => {
-                const newOption = options.find(
+                const newOption = DESSERTS.find(
                   (option) => option.value === value
                 )
                 if (newOption) {
