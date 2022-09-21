@@ -24,7 +24,7 @@ const DropdownPage: NextPage = () => {
             <label className={inlineLabel}>
               Select a dessert
               <select>
-                {DESSERTS.map((dessert) => <option value={dessert.value}>
+                {DESSERTS.map((dessert) => <option key={dessert.value} value={dessert.value}>
                   {dessert.content}
                 </option>)}
               </select>

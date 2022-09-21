@@ -28,7 +28,6 @@ const ListBox = <T,>({
 
   const handleSelectOrDeselect = (option: Option<T>) => {
     const isSelected = checkForSelected(option.value)
-    console.log({ isSelected }, option.value)
     if (selectType === 'single') {
       if (!isSelected) {
         handleSelect(option.value)
@@ -68,7 +67,6 @@ const ListBox = <T,>({
       }}
       onKeyDown={(e) => {
         if (e.key === 'Tab' && selectType !== 'single') {
-          console.log(e.key)
           document.body.click()
         }
       }}
@@ -100,7 +98,7 @@ const ListItem = forwardRef(
       checkForSelected,
       handleSelectOrDeselect,
       render,
-      selectType
+      //selectType
     }: {
       option: Option<unknown>
       className: string

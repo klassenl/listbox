@@ -1,9 +1,7 @@
-import { forwardRef } from 'react'
 import ListBox from '../listbox/listbox'
 import Menu from '../menu/menu'
 import { ListboxProps } from '../listbox/types'
 import Checkbox from '../checkbox/checkbox'
-import { Option } from '../listbox/types'
 import {
   dropdownButton,
   menu,
@@ -23,7 +21,7 @@ const Dropdown = ({
       mode="select"
       autoFocus
       trigger={
-        <button type='button'  className={[dropdownButton].join(' ')}>
+        <button type="button" className={[dropdownButton].join(' ')}>
           {selectedValues?.[0]?.content ?? placeholder}
         </button>
       }
