@@ -18,7 +18,6 @@ const useOutsideClick = ({
       if (isTrigger || isContent) {
         return
       }
-      console.log('closing menu')
       clickCallback()
     }
     document.addEventListener('click', handleClick)

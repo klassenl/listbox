@@ -54,7 +54,6 @@ const Menu = ({
     afterSelect:
       mode === 'select'
         ? () => {
-            console.log('closing, menu is open:', open)
             setOpen(false)
           }
         : undefined
@@ -109,4 +108,5 @@ const MenuPopUp = forwardRef(
     )
   }
 )
+MenuPopUp.displayName = 'MenuPopUp'
 export default Menu
