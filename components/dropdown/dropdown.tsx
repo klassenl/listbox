@@ -3,16 +3,27 @@ import ListBox from '../listbox/listbox'
 import Menu from '../menu/menu'
 import { ListboxProps } from '../listbox/types'
 import Checkbox from '../checkbox/checkbox'
-import { dropdownButton, menu, listItem, menuInner, selectedItemInner } from './dropdown.css'
-const Dropdown = forwardRef<
-  HTMLButtonElement,
-  ListboxProps<unknown> & { placeholder?: string; name?: string }
->(({ selectedValues, placeholder = 'Select an option', ...other }, ref) => {
+import { Option } from '../listbox/types'
+import {
+  dropdownButton,
+  menu,
+  listItem,
+  selectedItemInner
+} from './dropdown.css'
+import { menuInner } from '../menu/menu.css'
+
+const Dropdown = ({
+  selectedValues,
+  placeholder = 'Select an option',
+  ...other
+}: ListboxProps<any> & { placeholder?: string }) => {
   return (
     <Menu
       className={menu}
+      mode="select"
+      autoFocus
       trigger={
-        <button ref={ref} className={[dropdownButton].join(' ')}>
+        <button type='button'  className={[dropdownButton].join(' ')}>
           {selectedValues?.[0]?.content ?? placeholder}
         </button>
       }
@@ -21,6 +32,7 @@ const Dropdown = forwardRef<
         listBoxClass={menuInner}
         selectedValues={selectedValues}
         listItemClass={listItem}
+        allowUnselected={false}
         render={(option, selected) =>
           selected ? (
             <div className={selectedItemInner}>
@@ -35,7 +47,7 @@ const Dropdown = forwardRef<
       />
     </Menu>
   )
-})
+}
 
 Dropdown.displayName = 'Dropdown'
 

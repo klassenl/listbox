@@ -7,7 +7,7 @@ const ListBox = <T,>({
   id,
   options,
   name,
-  selectType,
+  selectType = 'single',
   selectedValues,
   handleSelect,
   allowUnselected,
@@ -15,7 +15,8 @@ const ListBox = <T,>({
   listItemClass,
   handleDeselect,
   disabled,
-  render
+  render,
+  afterSelect
 }: ListboxProps<T>) => {
   const itemsRef = useRef<Array<HTMLLIElement | null>>([])
   const checkForSelected = (value: T | undefined) => {
@@ -27,17 +28,25 @@ const ListBox = <T,>({
 
   const handleSelectOrDeselect = (option: Option<T>) => {
     const isSelected = checkForSelected(option.value)
+    console.log({ isSelected }, option.value)
     if (selectType === 'single') {
-      handleSelect(isSelected && allowUnselected ? undefined : option.value)
-    } else {
-      if (isSelected) {
-        handleDeselect && option?.value && handleDeselect(option.value)
-      } else {
+      if (!isSelected) {
         handleSelect(option.value)
+        afterSelect && afterSelect()
+      } else {
+        afterSelect && afterSelect()
       }
+      return
     }
-  }
+    if (isSelected && handleDeselect && allowUnselected) {
+      handleDeselect(option.value)
+      afterSelect && afterSelect()
+      return
+    }
 
+    handleSelect(option.value)
+    afterSelect && afterSelect()
+  }
   return (
     <ul
       id={id}
@@ -57,11 +66,19 @@ const ListBox = <T,>({
           itemsRef?.current[0]?.focus()
         }
       }}
+      onKeyDown={(e) => {
+        if (e.key === 'Tab' && selectType !== 'single') {
+          console.log(e.key)
+          document.body.click()
+        }
+      }}
     >
       {options.map((option, i) => {
         return (
           <ListItem
             key={`item-chk-${option.value}`}
+            //@ts-ignore FIX THIS
+            afterSelect={afterSelect}
             handleSelectOrDeselect={handleSelectOrDeselect}
             checkForSelected={checkForSelected}
             className={listItemClass ? listItemClass : listItem}
@@ -82,13 +99,15 @@ const ListItem = forwardRef(
       className,
       checkForSelected,
       handleSelectOrDeselect,
-      render
+      render,
+      selectType
     }: {
       option: Option<unknown>
       className: string
       handleSelectOrDeselect: (option: Option<any>) => void
       checkForSelected: (value: any) => boolean
       render?: (option: Option<any>, selected: boolean) => JSX.Element
+      selectType: 'single' | 'multi'
     },
     ref
   ) => {
@@ -99,10 +118,16 @@ const ListItem = forwardRef(
         role="option"
         tabIndex={-1}
         aria-selected={checkForSelected(option.value) || false}
-        onClick={() => handleSelectOrDeselect(option)}
+        onClick={(e) => {
+          e.preventDefault()
+          handleSelectOrDeselect(option)
+        }}
         onKeyDown={(e) => {
           const target = e.target as HTMLElement
           const key = e.key ? e.code : e.key
+          if (e.key !== 'Tab') {
+            e.preventDefault()
+          }
           switch (key) {
             case 'ArrowDown': {
               focus.next(target)
@@ -116,13 +141,22 @@ const ListItem = forwardRef(
               handleSelectOrDeselect(option)
               break
             }
-
             case 'Home': {
               focus.first(target)
               break
             }
             case 'End': {
               focus.last(target)
+              break
+            }
+            case 'Enter': {
+              handleSelectOrDeselect(option)
+              break
+              // handle select but do not deselect ?
+            }
+            case 'Tab': {
+              //handleSelectOrDeselect(option)
+              // select and leave menu?
               break
             }
           }

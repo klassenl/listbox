@@ -6,6 +6,7 @@ import { subHeading, componentHeading, componentGrid } from '../styles/app.css'
 import CheckboxGroup from '../components/checkbox-group/checkbox-group'
 import CheckboxMenu from '../components/checkbox-menu/checkbox-menu'
 import { DESSERTS } from '../fake-data'
+
 const ListboxPage: NextPage = () => {
   const [multiSelection, setMultiSelection] = useState<Option<number>[]>([])
   const [singleSelection, setSingleSelection] = useState<

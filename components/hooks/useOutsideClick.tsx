@@ -1,18 +1,25 @@
-import { EventHandler, RefObject, useRef, useEffect} from 'react'
-const useOutsideClick = (
-  callback: () => void,
-  trigger: RefObject<HTMLElement>
-) => {
-  const ref = useRef<HTMLElement>()
+import { EventHandler, RefObject, useRef, useEffect } from 'react'
 
+const useOutsideClick = ({
+  clickCallback,
+  trigger
+}: {
+  clickCallback: () => void
+  trigger: RefObject<HTMLElement>
+}) => {
+  const ref = useRef<HTMLElement>()
   useEffect(() => {
     const handleClick: EventHandler<any> = (event) => {
-      if (trigger?.current && trigger?.current.contains(event.target as Node)) {
+      const isTrigger =
+        Boolean(trigger?.current) && trigger?.current?.contains(event.target)
+      const isContent =
+        Boolean(ref?.current) && ref?.current?.contains(event.target)
+
+      if (isTrigger || isContent) {
         return
       }
-      if (ref.current && !ref.current.contains(event.target as Node)) {
-        callback()
-      }
+      console.log('closing menu')
+      clickCallback()
     }
     document.addEventListener('click', handleClick)
     return () => {
