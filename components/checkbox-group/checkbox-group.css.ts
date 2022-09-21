@@ -21,7 +21,7 @@ export const item = style([
     ':hover': {
       backgroundColor: vars.colors.lightestGray,
     },
-    ':focus-visible': {
+    ':focus': {
       outline: vars.outline.focus,
     },
     selectors: {

@@ -22,7 +22,7 @@ const CheckboxGroup = <T,>({
             <Checkbox checked={isChecked} aria-hidden readOnly tabIndex={-1} />
             {option.content}
           </div>
-        ),
+        )
       }
     })
   }

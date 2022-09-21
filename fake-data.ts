@@ -2,7 +2,7 @@ import { Option } from "./components/listbox/types"
 const DESSERTS: Option<number>[] = [
   {
     content: 'Cake',
-    value: 123,
+    value:  123,
   },
   {
     content: 'Cookies',
@@ -14,7 +14,7 @@ const DESSERTS: Option<number>[] = [
   },
   {
     content: 'Chocolate',
-    value: 700,
+    value: 1012,
   },
 ]
 
