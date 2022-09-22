@@ -146,6 +146,7 @@ const MenuPopUp = forwardRef(
           listbox.focus()
         }
       }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
     return (
       <div ref={contentRef as any}>
