@@ -22,7 +22,8 @@ const ListBox = forwardRef(
       initialFocus,
       readOnly,
       required
-    }: ListboxProps<T> & { initialFocus?: 'first' | 'last' },
+      // todo: fix this any ts
+    }: ListboxProps<any> & { initialFocus?: 'first' | 'last' },
     ref: any
   ) => {
     const itemsRef = useRef<Array<HTMLLIElement | null>>([])
