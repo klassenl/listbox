@@ -1,14 +1,16 @@
-import { forwardRef, PropsWithChildren } from 'react'
+import { ButtonHTMLAttributes, forwardRef, PropsWithChildren } from 'react'
 import { buttonStyle } from './button.css'
 
 const Button = forwardRef<
   HTMLButtonElement,
-  PropsWithChildren<{ variant?: 'menu' | 'button' }>
->(({ children, variant = 'button', ...other }, ref) => (
+  PropsWithChildren<
+    ButtonHTMLAttributes<HTMLButtonElement> & { variant?: 'menu' | 'button' }
+  >
+>(({ children, type = 'button', variant = 'button', ...other }, ref) => (
   <button
+    ref={ref as any}
     className={buttonStyle[variant]}
-    type="button"
-    ref={ref}
+    type={type}
     {...other}
   >
     {children}

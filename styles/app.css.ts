@@ -35,7 +35,8 @@ export const componentHeading = style({
 export const componentGrid = style({
   display: 'grid',
   gap: vars.space.large,
-  gridAutoFlow: 'column'
+  gridAutoFlow: 'column',
+  marginBottom: vars.space.xLarge
 })
 
 export const navList = style({
@@ -120,6 +121,5 @@ export const inlineLabel = style({
   display: 'inline-grid',
   gridAutoFlow: 'column',
   alignItems: 'center',
-  gap: vars.space.xLarge,
+  gap: vars.space.xLarge
 })
-

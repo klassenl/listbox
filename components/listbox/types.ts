@@ -21,4 +21,6 @@ export interface ListboxProps<T> {
   disabled?: boolean
   render?: (option: Option<any>, selected: boolean) => JSX.Element
   afterSelect?: () => void
+  required?: boolean
+  readOnly?: boolean
 }

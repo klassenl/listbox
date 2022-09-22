@@ -1,16 +1,17 @@
-import { EventHandler, RefObject, useRef, useEffect } from 'react'
+import { EventHandler, useRef, useEffect, ForwardedRef } from 'react'
 
 const useOutsideClick = ({
   clickCallback,
   trigger
 }: {
   clickCallback: () => void
-  trigger: RefObject<HTMLElement>
+  trigger: HTMLElement | ForwardedRef<HTMLElement>
 }) => {
   const ref = useRef<HTMLElement>()
   useEffect(() => {
     const handleClick: EventHandler<any> = (event) => {
       const isTrigger =
+        //@ts-ignore
         Boolean(trigger?.current) && trigger?.current?.contains(event.target)
       const isContent =
         Boolean(ref?.current) && ref?.current?.contains(event.target)
