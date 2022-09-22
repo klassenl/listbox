@@ -9,7 +9,6 @@ const Home: NextPage = () => {
       <p className={subHeading}>
         {`Made with  `}
         <NavLink href="https://nextjs.org/" text="next.js" />
-        <NavLink href="https://www.npmjs.com/package/react-focus-lock" text="react-focus-lock" />
         <NavLink href="https://www.npmjs.com/package/@vanilla-extract/css" text="@vanilla-extract/css" last />
       </p>
       <nav className={navList} aria-label="type of component">
