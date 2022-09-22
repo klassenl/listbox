@@ -10,6 +10,7 @@ import {
 } from '../styles/app.css'
 import Dropdown from '../components/dropdown/dropdown'
 import { DESSERTS } from '../fake-data'
+
 const DropdownPage: NextPage = () => {
   const [singleSelection, setSingleSelection] = useState<
     Option<number> | undefined
@@ -24,9 +25,11 @@ const DropdownPage: NextPage = () => {
             <label className={inlineLabel}>
               Select a dessert
               <select>
-                {DESSERTS.map((dessert) => <option key={dessert.value} value={dessert.value}>
-                  {dessert.content}
-                </option>)}
+                {DESSERTS.map((dessert) => (
+                  <option key={dessert.value} value={dessert.value}>
+                    {dessert.content}
+                  </option>
+                ))}
               </select>
             </label>
           </div>

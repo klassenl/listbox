@@ -1,17 +1,17 @@
-import { useState, cloneElement, useId, useRef, forwardRef } from 'react'
+import React, {
+  useState,
+  cloneElement,
+  useId,
+  useRef,
+  forwardRef,
+  useEffect,
+  ForwardedRef
+} from 'react'
 import useOutsideClick from '../hooks/useOutsideClick'
-import FocusLock from 'react-focus-lock'
 import { menuOuter, menuDropdownOuter } from './menu.css'
+import { ListboxProps } from '../listbox/types'
 
-const Menu = ({
-  children,
-  trigger,
-  onOpen,
-  className = '',
-  autoFocus,
-  labelId,
-  mode
-}: {
+interface MenuProps {
   children: JSX.Element
   trigger: JSX.Element
   className?: string
@@ -19,18 +19,43 @@ const Menu = ({
   autoFocus?: boolean
   labelId?: string
   mode?: 'select' | 'listbox'
-}) => {
+  disabled?: boolean
+  triggerId?: string
+}
+const Menu = ({
+  children,
+  trigger,
+  onOpen,
+  className = '',
+  autoFocus,
+  labelId,
+  mode,
+  disabled,
+  triggerId
+}: MenuProps) => {
   const [open, setOpen] = useState(false)
+  const [initialFocus, setInitialFocus] = useState<'first' | 'last'>()
   const triggerRef = useRef<HTMLElement | undefined>()
-  const triggerId = useId()
+  const triggerId2 = useId()
   const contentId = useId()
 
+  const returnFocusToTrigger = () => {
+    const el = triggerRef?.current as HTMLElement
+    if (el) {
+      el.focus()
+    }
+  }
   const triggerElement = cloneElement(trigger, {
-    id: triggerId,
+    id: triggerId ?? triggerId2,
     ref: triggerRef,
     onKeyDown: (e: any) => {
-      if (e.key === 'ArrowDown') {
+      setInitialFocus(undefined)
+      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+        e.preventDefault()
         setOpen(!open)
+        if (e.key === 'ArrowUp') {
+          setInitialFocus('last')
+        }
         if (open && onOpen) {
           onOpen()
         }
@@ -42,39 +67,48 @@ const Menu = ({
         onOpen()
       }
     },
+    disabled: disabled,
+    ['data-trigger']: true,
+    ['aria-disabled']: disabled,
     ['aria-controls']: contentId,
     ['aria-expanded']: open,
     ['aria-haspopup']: 'listbox'
-    //role: comboBox ? 'combobox' : undefined
   })
 
   const listElement = cloneElement(children, {
     id: contentId,
     'aria-labelledby': labelId ?? triggerId,
+    triggerRef: triggerRef,
+    initialFocus: initialFocus,
     afterSelect:
       mode === 'select'
         ? () => {
             setOpen(false)
+            triggerRef?.current?.focus()
           }
         : undefined
-  })
+  } as Partial<ListboxProps<unknown>>)
   return (
     <div
       className={[menuOuter, className].join(' ')}
       onKeyDown={(e) => {
         if (e.key === 'Escape') {
           setOpen(false)
+          triggerRef?.current?.focus()
         }
-    }}
+      }}
     >
       {triggerElement}
       <div className={menuDropdownOuter}>
         {open && (
           <MenuPopUp
+            //@ts-ignore
             ref={triggerRef}
+            visible={open}
             autoFocus={autoFocus ?? false}
             setOpen={setOpen}
             listboxElement={listElement}
+            returnFocusToTrigger={returnFocusToTrigger}
           />
         )}
       </div>
@@ -87,23 +121,36 @@ const MenuPopUp = forwardRef(
     {
       setOpen,
       autoFocus,
-      listboxElement
+      listboxElement,
+      returnFocusToTrigger
     }: {
       setOpen: (open: boolean) => void
       autoFocus: boolean
       listboxElement: JSX.Element
+      returnFocusToTrigger: () => void
     },
-    ref
+    ref: ForwardedRef<HTMLElement>
   ) => {
     const contentRef = useOutsideClick({
-      clickCallback: () => setOpen(false),
-      trigger: ref as any
+      clickCallback: () => {
+        setOpen(false)
+        returnFocusToTrigger()
+      },
+      trigger: ref
     })
+
+    useEffect(() => {
+      if (autoFocus) {
+        const listbox = contentRef?.current?.children[0] as HTMLUListElement
+        if (listbox) {
+          listbox.focus()
+        }
+      }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
     return (
       <div ref={contentRef as any}>
-        <FocusLock returnFocus autoFocus={autoFocus}>
-          {listboxElement}
-        </FocusLock>
+        <>{listboxElement}</>
       </div>
     )
   }

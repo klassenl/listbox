@@ -11,6 +11,7 @@ import {
 import { menuInner } from '../menu/menu.css'
 
 const Dropdown = ({
+  id,
   selectedValues,
   placeholder = 'Select an option',
   ...other
@@ -18,6 +19,7 @@ const Dropdown = ({
   return (
     <Menu
       className={menu}
+      triggerId={id}
       mode="select"
       autoFocus
       trigger={
